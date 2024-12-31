@@ -7,10 +7,39 @@ class Customer:
     def get_all():
         """Retrieve all customers from the database."""
         query = "SELECT * FROM customers;"
-        with get_db_connection() as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(query)
-                return cursor.fetchall()
+        try:
+            with get_db_connection() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(query)
+                    # Use fetchall() to get all rows and process them into a list of dicts
+                    columns = [col[0] for col in cursor.description]  # Get column names
+                    rows = [
+                        dict(zip(columns, row))  # Combine column names with their values
+                        for row in cursor.fetchall()
+                    ]
+                    return rows
+        except Exception as e:
+            print("Error in get_all:", e)
+            return []
+
+    @staticmethod
+    def get_customer_names():
+        """Retrieve all customer names from the database"""
+        query = "SELECT customer_id, first_name, last_name, email FROM customers;"
+        try:
+            with get_db_connection() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(query)
+                    # Use fetchall() to get all rows and process them into a list of dicts
+                    columns = [col[0] for col in cursor.description]  # Get column names
+                    rows = [
+                        dict(zip(columns, row))  # Combine column names with their values
+                        for row in cursor.fetchall()
+                    ]
+                    return rows
+        except Exception as e:
+            print("Error in get_all:", e)
+            return []
 
     @staticmethod
     def get_by_id(customer_id):

@@ -1,14 +1,24 @@
 from flask import Blueprint, jsonify, request
+
 from app.customers.controller import CustomerController
 
 customers = Blueprint("customers", __name__)
 
-@customers.route("/customers", methods=["GET"])
+@customers.route("/customers/getCustomerList", methods=["GET"])
 def get_customers():
     """API route to get all customers."""
     try:
         customers_list = CustomerController.list_customers()
         return jsonify(customers_list), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@customers.route("/customers/getCustomerNames", methods=["GET"])
+def get_customer_names():
+    """API route to get all customers names."""
+    try:
+        customer_names_list = CustomerController.get_customer_names()
+        return jsonify(customer_names_list), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

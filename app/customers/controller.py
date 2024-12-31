@@ -10,10 +10,27 @@ class CustomerController:
         return [
             {
                 "id": customer["customer_id"],
-                "name": f"{customer['first_name']} {customer['last_name']}",
+                "first_name": customer["first_name"],
+                "last_name": customer["last_name"],
                 "email": customer["email"],
                 "phone": customer["phone"],
-                "address": customer["address"]
+                "street": customer["street"],
+                "city": customer["city"],
+                "state": customer["state"],
+                "zip": customer["zip"]
+            }
+            for customer in customers
+        ]
+
+
+    @staticmethod
+    def get_customer_names():
+        """Controller to list all customers."""
+        customers = Customer.get_customer_names()
+        return [
+            {
+                "id": customer["customer_id"],
+                "full_name_email": f"{customer['first_name']} {customer['last_name']} - {customer['email']}",
             }
             for customer in customers
         ]
