@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify, request
-
 from app.invoices.controller import InvoiceController
 from app.invoices.invoice import Invoice
 
@@ -43,6 +42,29 @@ def get_invoices():
     try:
         invoice_list = InvoiceController.list_invoices()
         return jsonify(invoice_list), 200
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@invoices.route("/invoices/sendInvoice", methods=["POST"])
+def send_invoice():
+    """API route to add a new customer."""
+    try:
+        data = request.get_json()  # Parse the incoming JSON payload
+        invoiceItemData = data
+        # response = InvoiceController.create_invoice(data)
+        # if response["ok"]:
+        #     InvoiceController.add_invoice_items(invoiceItemData, response['invoice_id'])
+        #     return jsonify({
+        #         "message": "Invoice added successfully",
+        #         "invoice_id": response["invoice_id"]
+        #     }), 201
+        # else:
+        #     return jsonify({
+        #         "errorCode": response["errorCode"],
+        #         "error": response["error"]
+        #     }), 400
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:

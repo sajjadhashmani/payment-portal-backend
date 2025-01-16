@@ -13,7 +13,7 @@ class Invoice:
         query = """
                INSERT INTO invoices (customer_id, invoice_number, issue_date, due_date, total_amount,
     tax_amount, discount_amount, status)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, 'pending')
+    VALUES (%s, %s, %s, %s, %s, %s, %s, 'draft')
     RETURNING invoice_id;
                """
         # Extract address fields
@@ -123,6 +123,7 @@ class Invoice:
                     i.amount_due,
                     i.status,
                     CONCAT(c.first_name, ' ', c.last_name) AS customer_name,
+                    c.email,
                     JSON_AGG(
                         JSON_BUILD_OBJECT(
                             'product_name', p.name,
@@ -140,7 +141,7 @@ class Invoice:
                 LEFT JOIN
                     products p ON ii.product_id = p.product_id
                 GROUP BY
-                    i.invoice_id, i.invoice_number, i.issue_date, i.due_date, i.amount_due, i.status, c.first_name, c.last_name
+                    i.invoice_id, i.invoice_number, i.issue_date, i.due_date, i.amount_due, i.status, c.first_name, c.last_name, c.email
                 ORDER BY
                     i.invoice_id;
 

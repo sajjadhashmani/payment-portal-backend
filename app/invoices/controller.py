@@ -28,6 +28,7 @@ class InvoiceController:
                 "invoice_id": invoice["invoice_id"],
                 "invoice_number": invoice["invoice_number"],
                 "customer_name": invoice["customer_name"],
+                "email": invoice["email"],
                 "issue_date": invoice["issue_date"],
                 "due_date": invoice["due_date"],
                 "amount_due": invoice["amount_due"],
